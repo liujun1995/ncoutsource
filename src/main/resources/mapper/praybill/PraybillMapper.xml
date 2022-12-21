@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncoutsource.mapper.PraybillMapper">
+
+   <!-- List<Praybill> selectPraybillsByCondition(String fbillstatus,
+    String bislatest,
+    String dr,
+    String pk_org_v,
+    String vdef14);-->
+    <select id="selectPraybillsByCondition" resultType="com.ncoutsource.entity.Praybill">
+
+        select * from po_praybill where fbillstatus=#{fbillstatus}
+        and bislatest=#{bislatest} and nvl(dr,0)=#{dr} and pk_org_v=#{pk_org_v}
+        and vdef14 !=#{vdef14}
+
+    </select>
+
+    <!--Integer updatePraybillVbdef(String pk_praybill);-->
+    <update id="updatePraybillVbdef">
+        update po_praybill set vdef14='Y' where pk_praybill=#{pk_praybill} and nvl(dr,0)=0
+    </update>
+
+</mapper>

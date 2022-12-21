@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ncoutsource.mapper.PraybillBMapper">
+
+    <!--Integer updatePraybillBsVbdef(List<PraybillDetail> filtedPraybillDetails);-->
+    <update id="updatePraybillBsVbdef" parameterType="java.util.List">
+        <foreach collection="list" item="praybillDetail" index="index" separator="" open="begin" close="end;">
+            update po_praybill_b
+            <set>
+                vbdef14='Y'
+            </set>
+            where pk_praybill_b=#{praybillDetail.pk_praybill_b} and nvl(dr,0)=0
+        </foreach>
+    </update>
+
+</mapper>
