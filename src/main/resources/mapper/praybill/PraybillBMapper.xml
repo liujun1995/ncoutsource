@@ -4,12 +4,14 @@
 
     <!--Integer updatePraybillBsVbdef(List<PraybillDetail> filtedPraybillDetails);-->
     <update id="updatePraybillBsVbdef" parameterType="java.util.List">
-        <foreach collection="list" item="praybillDetail" index="index" separator="" open="begin" close="end;">
+        <foreach collection="list" item="praybillDetail" index="index" separator=";" open="begin" close=";end;">
             update po_praybill_b
             <set>
                 vbdef14='Y'
             </set>
-            where pk_praybill_b=#{praybillDetail.pk_praybill_b} and nvl(dr,0)=0
+            <where>
+                pk_praybill_b=#{praybillDetail.PK_PRAYBILL_B} and nvl(dr,0)=0
+            </where>
         </foreach>
     </update>
 

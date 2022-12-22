@@ -5,6 +5,7 @@ import com.ncoutsource.entity.Praybill;
 import com.ncoutsource.mapper.PraybillMapper;
 import com.ncoutsource.service.IPraybillService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
@@ -27,14 +28,15 @@ public class PraybillServiceImpl extends ServiceImpl<PraybillMapper, Praybill>
                                                     String bislatest,
                                                     String dr,
                                                     String pk_org_v,
-                                                    String vdef14) {
+                                                    String vdef14,
+                                                    String vdef15) {
 
-        return baseMapper.selectPraybillsByCondition(fbillstatus,bislatest, dr, pk_org_v, vdef14);
+        return baseMapper.selectPraybillsByCondition(fbillstatus,bislatest, dr, pk_org_v, vdef14,vdef15);
     }
 
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public boolean changePraybillVbdef(String pk_praybill) {
 
         Integer integer = baseMapper.updatePraybillVbdef(pk_praybill);

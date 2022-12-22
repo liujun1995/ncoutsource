@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ncoutsource.mapper.StockorgVMapper">
 
-    <select id="selectStockorgPkByCode" resultType="java.lang.String">
+   <!-- <select id="selectStockorgPkByCode" resultType="java.lang.String">
         select pk_vid from org_stockorg_v where code = #{StockorgCode}
-    </select>
+    </select>-->
 
 </mapper>

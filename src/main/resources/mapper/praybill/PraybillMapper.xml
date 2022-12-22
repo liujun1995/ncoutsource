@@ -11,7 +11,7 @@
 
         select * from po_praybill where fbillstatus=#{fbillstatus}
         and bislatest=#{bislatest} and nvl(dr,0)=#{dr} and pk_org_v=#{pk_org_v}
-        and vdef14 !=#{vdef14}
+        and vdef14 =#{vdef14} and vdef15=#{vdef15}
 
     </select>
 

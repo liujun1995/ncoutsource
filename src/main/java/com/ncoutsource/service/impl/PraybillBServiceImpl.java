@@ -6,6 +6,7 @@ import com.ncoutsource.entity.PraybillDetail;
 import com.ncoutsource.mapper.PraybillBMapper;
 import com.ncoutsource.service.IPraybillBService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
@@ -21,13 +22,12 @@ public class PraybillBServiceImpl extends ServiceImpl<PraybillBMapper, PraybillB
      */
     @Override
     public List<PraybillB> queryPraybillBsByPraybillPk(String pk_praybill) {
-
        return baseMapper.selectPraybillBsByPraybillPk(pk_praybill);
 
     }
 
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public boolean changePraybillBsVbdef(List<PraybillDetail> filtedPraybillDetails) {
 
         Integer integer = baseMapper.updatePraybillBsVbdef(filtedPraybillDetails);

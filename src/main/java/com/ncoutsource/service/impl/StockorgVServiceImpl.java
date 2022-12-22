@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 
 
-@Transactional
+
 @Service
 public class StockorgVServiceImpl implements IStockorgVService {
 

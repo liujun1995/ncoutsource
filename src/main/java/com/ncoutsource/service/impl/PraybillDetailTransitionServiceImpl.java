@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 
-@Transactional
 @Service
 public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTransitionService {
 
@@ -54,7 +53,6 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
                                                                          Praybill praybill) {
 
         List<PraybillDetail> praybillDetails = new ArrayList<PraybillDetail>();
-
 
         for (PraybillB praybillB : praybillBs) {
 
@@ -145,10 +143,8 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
         //项目 pk、code、name、项目代号、开工单号
         praybillDetail = assembleProject(praybillDetail, praybillB);
 
-        //生产部门
-        String vfree1 = praybillB.getVFREE1();
-
-        praybillDetail.setPRODUCE_DEPT(vfree1);
+        //拼生产部门主键、编码
+        assembleProduceDept(praybillDetail, praybillB);
 
         //拼质检分类
         praybillDetail  = assembleQI(praybillDetail, praybillB);
@@ -192,6 +188,24 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
     }
 
+    public PraybillDetail assembleProduceDept(PraybillDetail praybillDetail, PraybillB praybillB) {
+
+        String vfree1 = praybillB.getVFREE1();
+
+        if (null!=vfree1 && !"~".equalsIgnoreCase(vfree1)){
+
+            praybillDetail.setPRODUCE_DEPTID(vfree1);
+
+            String code = deptVMapper.selectDeptVCodeByPk(vfree1);
+
+            praybillDetail.setPRODUCE_DEPTCODE(code);
+
+        }
+
+        return praybillDetail;
+
+    }
+
     public PraybillDetail assembleQI(PraybillDetail praybillDetail, PraybillB praybillB) {
 
         String vbdef17 = praybillB.getVBDEF17();
@@ -203,7 +217,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
             //质检分类的code
             Map<String, Object> QICoding = defdocMapper.selectQICodeByPk(vbdef17);
 
-            Object code = QICoding.get("code");
+            Object code = QICoding.get("CODE");
 
             if (null!=code){
 
@@ -235,7 +249,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
             Map<String, Object> projectCodeAndNameAndSymbolAndNumber
                     = projectMapper.selectCodeAndNameAndSymbolAndNumberByPk(cprojectid);
 
-            Object project_code = projectCodeAndNameAndSymbolAndNumber.get("project_code");
+            Object project_code = projectCodeAndNameAndSymbolAndNumber.get("PROJECT_CODE");
 
             if (null!=project_code){
 
@@ -245,7 +259,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             }
 
-            Object project_name = projectCodeAndNameAndSymbolAndNumber.get("project_name");
+            Object project_name = projectCodeAndNameAndSymbolAndNumber.get("PROJECT_NAME");
 
             if (null!=project_name){
 
@@ -254,7 +268,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
                 praybillDetail.setCPROJECTNAME(projectName);
             }
 
-            Object def1 = projectCodeAndNameAndSymbolAndNumber.get("def1");
+            Object def1 = projectCodeAndNameAndSymbolAndNumber.get("DEF1");
 
             if (null!=def1){
 
@@ -264,7 +278,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             }
 
-            Object def16 = projectCodeAndNameAndSymbolAndNumber.get("def16");
+            Object def16 = projectCodeAndNameAndSymbolAndNumber.get("DEF16");
 
             if (null!=def16){
 
@@ -291,7 +305,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             Map<String, Object> supplierCodeAndName = supplierMapper.selectSupplierCodeAndName(pk_suggestsupplier);
 
-            Object code = supplierCodeAndName.get("code");
+            Object code = supplierCodeAndName.get("CODE");
 
             if (null!=code){
 
@@ -301,7 +315,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             }
 
-            Object name = supplierCodeAndName.get("name");
+            Object name = supplierCodeAndName.get("NAME");
 
             if (null!=name){
 
@@ -329,7 +343,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             Map<String, Object> measCodeAndName = measdocMapper.selectMeasCodeAndNameByPk(castunitid);
 
-            Object code = measCodeAndName.get("code");
+            Object code = measCodeAndName.get("CODE");
 
             if (null!=code){
 
@@ -339,7 +353,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             }
 
-            Object name = measCodeAndName.get("name");
+            Object name = measCodeAndName.get("NAME");
 
             if(null!=name){
 
@@ -370,7 +384,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
             Map<String, Object> codeAndNameAndVersionAndSpec =
                     materialMapper.selectMaterialCodeAndNameAndVersionAndSpecByPk(pk_material);
 
-            Object code = codeAndNameAndVersionAndSpec.get("code");
+            Object code = codeAndNameAndVersionAndSpec.get("CODE");
 
             if (null!=code){
 
@@ -379,7 +393,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
                 praybillDetail.setCODE_MATERIAL(materialCode);
             }
 
-            Object name = codeAndNameAndVersionAndSpec.get("name");
+            Object name = codeAndNameAndVersionAndSpec.get("NAME");
 
             if (null!=name){
 
@@ -390,17 +404,17 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             }
 
-            Object version = codeAndNameAndVersionAndSpec.get("version");
+            Object version = codeAndNameAndVersionAndSpec.get("VERSION");
 
             if (null!=version){
 
-                Integer materialVersion = (Integer)version;
+                java.math.BigDecimal materialVersion = (java.math.BigDecimal)version;
 
                 praybillDetail.setVERSION_MATERIAL(materialVersion.toString());
 
             }
 
-            Object spec = codeAndNameAndVersionAndSpec.get("materialspec");
+            Object spec = codeAndNameAndVersionAndSpec.get("MATERIALSPEC");
 
             if (null!=spec){
 
@@ -499,7 +513,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             Map<String, Object> outsourceCodeByPk = defdocMapper.selectOutsourceCodeByPk(vdef5);
 
-            Object code = outsourceCodeByPk.get("code");
+            Object code = outsourceCodeByPk.get("CODE");
 
             if (null!=code){
 
@@ -563,7 +577,7 @@ public class PraybillDetailTransitionServiceImpl implements IPraybillDetailTrans
 
             Map<String, Object> psndocCodeById = psndocMapper.selectPsnCodeByPk(pk_planpsn);
 
-            Object code = psndocCodeById.get("code");
+            Object code = psndocCodeById.get("CODE");
 
             if (null!=code && !"~".equalsIgnoreCase((String) code)){
 

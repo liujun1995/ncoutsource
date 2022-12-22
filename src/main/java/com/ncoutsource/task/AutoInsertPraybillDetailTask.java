@@ -1,7 +1,7 @@
 package com.ncoutsource.task;
 
 
-import com.ncoutsource.service.InsertPraybillDetailUpdatePraybillBService;
+import com.ncoutsource.service.IGainInsertPraybillDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,7 +16,7 @@ public class AutoInsertPraybillDetailTask {
 //	private ITestService testService;
 
     @Autowired
-    private InsertPraybillDetailUpdatePraybillBService insertPraybillDetailUpdatePraybillBService;
+    private IGainInsertPraybillDetailsService insertPraybillDetailUpdatePraybillBService;
 
 //	@Scheduled(cron = "0/5 * * * * ? ")
 //	public void selectAll() {
@@ -31,7 +31,7 @@ public class AutoInsertPraybillDetailTask {
     @Scheduled(initialDelay = 5*1000, fixedRate = 5*60*1000)
     public void insertPraybillDetail(){
 
-        insertPraybillDetailUpdatePraybillBService.insertPraybillDetails();
+      insertPraybillDetailUpdatePraybillBService.insertPraybillDetails();
 
     }
 

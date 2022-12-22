@@ -17,7 +17,8 @@ public interface IPraybillService extends IService<Praybill> {
                                              String bislatest,
                                              String dr,
                                              String pk_org_v,
-                                             String vdef14);
+                                             String vdef14,
+                                             String vdef15);
 
     /**
      * 将po_praybill中的vdef14更新为Y,代表以存入中间表
