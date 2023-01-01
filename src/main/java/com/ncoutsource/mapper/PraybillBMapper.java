@@ -11,8 +11,14 @@ import java.util.List;
 @Mapper
 public interface PraybillBMapper extends BaseMapper<PraybillB> {
 
-   @Select("select * from po_praybill_b where pk_praybill=#{pk_praybill} and nvl(dr,0)=0 and vbdef14!='Y'")
+   /**
+    * 查询没有抓取到中间表的,以及表体行不是行关闭状态的
+    * @param pk_praybill
+    * @return
+    */
+   @Select("select * from po_praybill_b where pk_praybill=#{pk_praybill} and nvl(dr,0)=0 and vbdef15='N' and browclose='N'")
    List<PraybillB> selectPraybillBsByPraybillPk(@Param("pk_praybill") String pk_praybill);
 
    Integer updatePraybillBsVbdef(List<PraybillDetail> filtedPraybillDetails);
+
 }

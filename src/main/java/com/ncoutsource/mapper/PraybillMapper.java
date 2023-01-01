@@ -15,8 +15,7 @@ public interface PraybillMapper extends BaseMapper<Praybill> {
                                     @Param("bislatest") String bislatest,
                                     @Param("dr") String dr,
                                     @NotNull @Param("pk_org_v") String pk_org_v,
-                                    @Param("vdef14") String vdef14,
-                                              @Param("vdef15") String vdef15);
+                                              @Param("vdef1") String vdef1);
 
     Integer updatePraybillVbdef(@NotNull @Param("pk_praybill") String pk_praybill);
 

@@ -15,8 +15,8 @@ import java.util.List;
 /**
  * @author LiuJun
  * 入口service
- * 不是历史数据vdef15,未写入中间表vdef14
- * 按审批通过，表头bislatest dr=0 vdef14=N dr=0的插入,组织71601,vdef15=N
+ * 请购单表头,不是历史数据vdef1,未写入中间表vdef3
+ * 按审批通过，表头bislatest dr=0 vdef1=N dr=0的插入,组织71601,vdef3=N
  * 查询出所有符合的表头，
  * 对每一个表头，查询相应的多行表体
  * 多行表体拼出对应的多行detail(负责转换的com.ncoutsource.service.impl.PraybillDetailTransitionServiceImpl
@@ -56,10 +56,11 @@ public class GainInsertPraybillDetailsServiceImpl implements IGainInsertPraybill
         //按code查询库存组织pk
         String orgPk = iStockorgVService.queryStockorgPkByCode("71601");
 
-        //查询出所有符合的表头
-        //审批通过、最新版本、dr=0、vdef14=N没存入中间表、vdef15=N不是历史数据
+        //查询出所有符合的表头,对于vdef3=N这个条件需要去掉,因为对于行关闭,表头vdef3还是Y这种情况,该行再打开,需要把该行保存到中间表
+        //表体过滤掉行关闭的,中间表中已存在的
+        //审批通过、最新版本、dr=0、vdef3=N没存入中间表、vdef1=N不是历史数据
         List<Praybill> praybills = iPraybillService.queryPraybillsByCondition("3", "Y",
-                "0", orgPk, "N","N");
+                "0", orgPk, "N");
 
         if (null!=praybills && praybills.size()>0){
 
@@ -76,25 +77,47 @@ public class GainInsertPraybillDetailsServiceImpl implements IGainInsertPraybill
 
     public void assemblePraybillDetailsTheninsertPraybillDetailsUpdatePraybillBsAndPraybill(@NotNull Praybill praybill) {
 
-        List<PraybillB> praybillBS = iPraybillBService.queryPraybillBsByPraybillPk(praybill.getPK_PRAYBILL());
+        List<PraybillB> praybillBs = iPraybillBService.queryPraybillBsByPraybillPk(praybill.getPK_PRAYBILL());
 
-        List<PraybillDetail> praybillDetails = iPraybillDetailTransitionService
-                .translateFromPraybillBsToPraybillDetails(praybillBS, praybill);
+        //过滤掉已经存入到中间表的表体行
+        List<PraybillB> filtedPraybillBs = getFilteredPraybillBs(praybillBs);
 
-        List<PraybillDetail> filtedPraybillDetails = getFiltedPraybillDetails(praybillDetails);
+        if (filtedPraybillBs.size()>0){
 
+            List<PraybillDetail> praybillDetails = iPraybillDetailTransitionService
+                    .translateFromPraybillBsToPraybillDetails(filtedPraybillBs, praybill);
+            //List<PraybillDetail> filtedPraybillDetails = getFilteredPraybillDetails(praybillDetails);
+            if (null!=praybillDetails && praybillDetails.size()>0){
+                iInsertPraybillDetailsUpdatePraybillBsAndPraybillService.
+                        insertPraybillDetailsUpdatePraybillBsAndPraybill(praybillDetails,praybill);
+            }
 
-        //调用IInsertPraybillDetailsUpdatePraybillBsAndPraybillService
-        if (null!=filtedPraybillDetails && filtedPraybillDetails.size()>0){
-            iInsertPraybillDetailsUpdatePraybillBsAndPraybillService.
-                    insertPraybillDetailsUpdatePraybillBsAndPraybill(filtedPraybillDetails,praybill);
         }
 
     }
 
 
+    //过滤掉已经存入到中间表的表体行
+    private List<PraybillB> getFilteredPraybillBs(List<PraybillB> praybillBs) {
 
-    public List<PraybillDetail> getFiltedPraybillDetails(List<PraybillDetail> praybillDetails) {
+        List<PraybillB> praybillBList = new ArrayList<>();
+
+        for (PraybillB praybillB : praybillBs) {
+
+            EntityWrapper<PraybillDetail> praybillDetailEntityWrapper = new EntityWrapper<>();
+
+            praybillDetailEntityWrapper.eq("PK_PRAYBILL_B",praybillB.getPK_PRAYBILL_B());
+
+            int count = iPraybillDetailService.selectCount(praybillDetailEntityWrapper);
+
+            if (!(count>0)){
+                praybillBList.add(praybillB);
+            }
+        }
+        return praybillBList;
+    }
+
+    /*public List<PraybillDetail> getFilteredPraybillDetails(List<PraybillDetail> praybillDetails) {
 
         List<PraybillDetail> praybillDetailList = new ArrayList<>();
         //对每个praybillDetail,下一次存入中间表时，为了避免将已审批的数据重复抓取到中间表中，
@@ -114,6 +137,6 @@ public class GainInsertPraybillDetailsServiceImpl implements IGainInsertPraybill
 
         return praybillDetailList;
 
-    }
+    }*/
 
 }

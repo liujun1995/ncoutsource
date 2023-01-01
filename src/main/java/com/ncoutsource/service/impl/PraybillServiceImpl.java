@@ -20,7 +20,6 @@ public class PraybillServiceImpl extends ServiceImpl<PraybillMapper, Praybill>
      * @param bislatest
      * @param dr
      * @param pk_org_v
-     * @param vdef14
      * @return
      */
     @Override
@@ -28,10 +27,9 @@ public class PraybillServiceImpl extends ServiceImpl<PraybillMapper, Praybill>
                                                     String bislatest,
                                                     String dr,
                                                     String pk_org_v,
-                                                    String vdef14,
-                                                    String vdef15) {
+                                                    String vdef1) {
 
-        return baseMapper.selectPraybillsByCondition(fbillstatus,bislatest, dr, pk_org_v, vdef14,vdef15);
+        return baseMapper.selectPraybillsByCondition(fbillstatus,bislatest, dr, pk_org_v, vdef1);
     }
 
 

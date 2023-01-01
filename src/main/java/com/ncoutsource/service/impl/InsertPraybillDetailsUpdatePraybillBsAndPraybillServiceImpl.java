@@ -42,7 +42,7 @@ public class InsertPraybillDetailsUpdatePraybillBsAndPraybillServiceImpl
 
             boolean isInsert = iPraybillDetailService.insertBatch(praybillDetails,praybillDetails.size());
 
-            //插入成功后更新po_praybill_b的vbdef14=Y和po_praybill的vdef14=Y
+            //插入成功后更新po_praybill_b的vbdef15=Y和po_praybill的vdef3=Y
 
             boolean isChangePraybillBsVbdef = iPraybillBService.changePraybillBsVbdef(praybillDetails);
 

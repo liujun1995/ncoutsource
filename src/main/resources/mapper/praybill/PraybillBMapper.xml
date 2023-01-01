@@ -7,7 +7,7 @@
         <foreach collection="list" item="praybillDetail" index="index" separator=";" open="begin" close=";end;">
             update po_praybill_b
             <set>
-                vbdef14='Y'
+                vbdef15='Y'
             </set>
             <where>
                 pk_praybill_b=#{praybillDetail.PK_PRAYBILL_B} and nvl(dr,0)=0

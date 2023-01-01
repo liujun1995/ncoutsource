@@ -11,13 +11,13 @@
 
         select * from po_praybill where fbillstatus=#{fbillstatus}
         and bislatest=#{bislatest} and nvl(dr,0)=#{dr} and pk_org_v=#{pk_org_v}
-        and vdef14 =#{vdef14} and vdef15=#{vdef15}
+        and vdef1=#{vdef1}
 
     </select>
 
     <!--Integer updatePraybillVbdef(String pk_praybill);-->
     <update id="updatePraybillVbdef">
-        update po_praybill set vdef14='Y' where pk_praybill=#{pk_praybill} and nvl(dr,0)=0
+        update po_praybill set vdef3='Y' where pk_praybill=#{pk_praybill} and nvl(dr,0)=0
     </update>
 
 </mapper>
