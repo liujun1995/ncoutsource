@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ncoutsource.mapper.PraybillMapper">
+<mapper namespace="com.nc.mapper.PraybillMapper">
 
    <!-- List<Praybill> selectPraybillsByCondition(String fbillstatus,
     String bislatest,
     String dr,
     String pk_org_v,
-    String vdef14);-->
-    <select id="selectPraybillsByCondition" resultType="com.ncoutsource.entity.Praybill">
+    String vdef14);
+    有两种情况:1不是历史数据,表头vdef3没存入中间表
+    2.不是历史数据,考虑到行打开的情况,表头vdef3存入中间表-->
+    <select id="selectPraybillsByCondition" resultType="com.nc.entity.Praybill">
 
-        select * from po_praybill where fbillstatus=#{fbillstatus}
+        select * from po_praybill where vdef3='N' and fbillstatus=#{fbillstatus}
+        and bislatest=#{bislatest} and nvl(dr,0)=#{dr} and pk_org_v=#{pk_org_v}
+        and vdef1=#{vdef1}
+        union
+        select * from po_praybill pp where exists (
+            select * from po_praybill_b pb where pp.pk_praybill=pb.pk_praybill
+            and pb.vbdef15='N' and pb.browclose='N' and nvl(pb.dr,0)=0
+        ) and vdef3='Y' and fbillstatus=#{fbillstatus}
         and bislatest=#{bislatest} and nvl(dr,0)=#{dr} and pk_org_v=#{pk_org_v}
         and vdef1=#{vdef1}
 

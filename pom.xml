@@ -68,15 +68,23 @@
 			<optional>true</optional>
 		</dependency>
 
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
 
+
 		<dependency>
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjweaver</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.dameng</groupId>
+			<version>8.1.2.141</version>
+			<artifactId>DmJdbcDriver17</artifactId>
 		</dependency>
 
 	</dependencies>
