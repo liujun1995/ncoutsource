@@ -1,6 +1,6 @@
 package com.nc.service.impl;
 
-import com.nc.mapper.StockorgVMapper;
+import com.nc.mapper.nc.StockorgVMapper;
 import com.nc.service.IStockorgVService;
 import org.springframework.stereotype.Service;
 

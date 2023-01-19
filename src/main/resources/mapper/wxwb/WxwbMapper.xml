@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nc.mapper.wxwb.WxwbMapper">
+
+
+    <select id="query" resultType="java.util.Map">
+
+		SELECT * FROM OUT_CONTRACT_INFO
+		LEFT JOIN PROCESS_SUPPLIER_INFO ON PROCESS_SUPPLIER_INFO.CONTRACT_ID = OUT_CONTRACT_INFO.CONTRACT_ID
+		LEFT JOIN MATTER_INFO ON MATTER_INFO.CONTRACT_ID = OUT_CONTRACT_INFO.CONTRACT_ID
+		WHERE OUT_CONTRACT_INFO.STATE = 0
+		<if test="null != whereSql and '' != whereSql">
+			AND ${whereSql}
+		</if>
+		UNION ALL
+		SELECT * FROM OUT_CONTRACT_INFO
+		LEFT JOIN PROCESS_SUPPLIER_INFO ON PROCESS_SUPPLIER_INFO.CONTRACT_ID = OUT_CONTRACT_INFO.CONTRACT_ID AND PROCESS_SUPPLIER_INFO.CONTRACTLOG_ID = OUT_CONTRACT_INFO.CONTRACTLOG_ID
+		LEFT JOIN MATTER_INFO ON MATTER_INFO.CONTRACT_ID = OUT_CONTRACT_INFO.CONTRACT_ID AND MATTER_INFO.CONTRACTLOG_ID = OUT_CONTRACT_INFO.CONTRACTLOG_ID
+		WHERE OUT_CONTRACT_INFO.STATE = 1
+		<if test="null != whereSql and '' != whereSql">
+			AND ${whereSql}
+		</if>
+    </select>
+
+	<!--List<Map<String, Object>> queryMatterAndContractInfoWithoutContractlogId(@Param("contractId") String contractIds,
+	@Param("materialCode") String materialCode,
+	@Param("buySource") Integer buySource);
+	合同名称、合同ID、立项ID、供应商编码、订货数量-->
+	<select id="queryMatterAndContractInfoWithoutContractlogId" resultType="java.util.Map">
+
+		SELECT OUT_CONTRACT_INFO.CONTRACT_ID,OUT_CONTRACT_INFO.PROJECT_NAME,OUT_CONTRACT_INFO.APPROVAL_ID,
+		OUT_CONTRACT_INFO.SUPPLIER_CODE,MATTER_INFO.MATTER_COUNT
+		FROM MATTER_INFO LEFT JOIN OUT_CONTRACT_INFO ON MATTER_INFO.CONTRACT_ID = OUT_CONTRACT_INFO.CONTRACT_ID
+		WHERE OUT_CONTRACT_INFO.CONTRACT_ID=#{contractId} AND MATTER_INFO.MATTER_CODE=#{materialCode}
+		AND OUT_CONTRACT_INFO.BUY_SOURCE=#{buySource}
+
+	</select>
+
+	<!--List<Map<String, Object>> queryMatterAndContractInfoWithContractlogId(@Param("contractId") String contractIds,
+																		  @Param("materialCode") String materialCode,
+																		  @Param("buySource") Integer buySource);-->
+	<select id="queryMatterAndContractInfoWithContractlogId" resultType="java.util.Map">
+
+		SELECT OUT_CONTRACT_INFO.CONTRACT_ID,OUT_CONTRACT_INFO.PROJECT_NAME,OUT_CONTRACT_INFO.APPROVAL_ID,
+		OUT_CONTRACT_INFO.SUPPLIER_CODE,MATTER_INFO.MATTER_COUNT
+		FROM MATTER_INFO LEFT JOIN OUT_CONTRACT_INFO ON MATTER_INFO.CONTRACT_ID = OUT_CONTRACT_INFO.CONTRACT_ID
+		WHERE OUT_CONTRACT_INFO.CONTRACT_ID=#{contractId}
+		AND MATTER_INFO.CONTRACTLOG_ID = OUT_CONTRACT_INFO.CONTRACTLOG_ID
+		AND MATTER_INFO.MATTER_CODE=#{materialCode}
+		AND OUT_CONTRACT_INFO.BUY_SOURCE=#{buySource}
+
+	</select>
+
+
+
+</mapper>
+

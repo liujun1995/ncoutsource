@@ -7,6 +7,8 @@ import com.nc.entity.PraybillDetail;
 import com.nc.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +52,7 @@ public class GainInsertPraybillDetailsServiceImpl implements IGainInsertPraybill
             iInsertPraybillDetailsUpdatePraybillBsAndPraybillService;
 
 
+    @Transactional(value = "ncTransactionManager")
     @Override
     public void insertPraybillDetails(){
 
@@ -111,27 +114,5 @@ public class GainInsertPraybillDetailsServiceImpl implements IGainInsertPraybill
         }
         return praybillBList;
     }
-
-    /*public List<PraybillDetail> getFilteredPraybillDetails(List<PraybillDetail> praybillDetails) {
-
-        List<PraybillDetail> praybillDetailList = new ArrayList<>();
-        //对每个praybillDetail,下一次存入中间表时，为了避免将已审批的数据重复抓取到中间表中，
-        //需要先按请购单表体主键查询中间表中是否有该条数据，没有再插入
-        for (PraybillDetail praybillDetail : praybillDetails) {
-
-            EntityWrapper<PraybillDetail> praybillDetailEntityWrapper = new EntityWrapper<>();
-
-            praybillDetailEntityWrapper.eq("PK_PRAYBILL_B",praybillDetail.getPK_PRAYBILL_B());
-
-            int count = iPraybillDetailService.selectCount(praybillDetailEntityWrapper);
-
-            if (!(count>0)){
-                praybillDetailList.add(praybillDetail);
-            }
-        }
-
-        return praybillDetailList;
-
-    }*/
 
 }

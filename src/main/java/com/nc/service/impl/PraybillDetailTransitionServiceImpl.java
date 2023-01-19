@@ -5,6 +5,7 @@ import com.nc.entity.PraybillB;
 import com.nc.entity.PraybillDetail;
 import com.nc.entity.PraybillStatusEnum;
 import com.nc.mapper.*;
+import com.nc.mapper.nc.*;
 import com.nc.service.IPraybillDetailTransitionService;
 import org.springframework.stereotype.Service;
 

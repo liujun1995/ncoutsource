@@ -35,7 +35,7 @@ public class InsertPraybillDetailsUpdatePraybillBsAndPraybillServiceImpl
      * @param praybillDetails
      * @param praybill
      */
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(value = "ncTransactionManager", propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     @Override
     public void insertPraybillDetailsUpdatePraybillBsAndPraybill(List<PraybillDetail> praybillDetails,
                                                                  Praybill praybill) {

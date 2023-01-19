@@ -1,6 +1,6 @@
 package com.nc.config;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,8 +33,9 @@ public class MyDruidConfig {
 		// 这些参数可以在 com.alibaba.druid.support.http.StatViewServlet 的父类
 		// com.alibaba.druid.support.http.ResourceServlet 中找到
 		Map<String, String> initParams = new HashMap<>();
-		initParams.put("loginUsername", "root");
-		initParams.put("loginPassword", "abc+123456");
+
+		initParams.put("loginUsername", "admin");
+		initParams.put("loginPassword", "123456");
 		initParams.put("allow", ""); // 默认就是允许所有访问
 		// initParams.put("deny", "192.168.10.132"); //deny：Druid 后台拒绝谁访问，表示禁止此ip访问
 		initParams.put("resetEnable", "false"); // 是否可以重置数据
@@ -49,11 +50,12 @@ public class MyDruidConfig {
 		FilterRegistrationBean bean = new FilterRegistrationBean();
 		bean.setFilter(new WebStatFilter());
 		Map<String, String> initParams = new HashMap<>();
-		// 忽略过滤的形式
+		// 或略过滤的形式
 		initParams.put("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
 		bean.setInitParameters(initParams);
 		// 设置过滤路径
-		bean.setUrlPatterns(Collections.singletonList("/*"));
+		bean.setUrlPatterns(Arrays.asList("/*"));
+
 		return bean;
 	}
 

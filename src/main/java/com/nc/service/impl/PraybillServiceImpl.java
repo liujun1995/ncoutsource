@@ -2,7 +2,7 @@ package com.nc.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.nc.entity.Praybill;
-import com.nc.mapper.PraybillMapper;
+import com.nc.mapper.nc.PraybillMapper;
 import com.nc.service.IPraybillService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -34,7 +34,7 @@ public class PraybillServiceImpl extends ServiceImpl<PraybillMapper, Praybill>
 
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class, value = "ncTransactionManager")
     public boolean changePraybillVbdef(String pk_praybill) {
 
         Integer integer = baseMapper.updatePraybillVbdef(pk_praybill);

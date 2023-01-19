@@ -1,7 +1,7 @@
 package com.nc.service.impl;
 
 
-import com.nc.mapper.PraybillDetailMapper;
+import com.nc.mapper.nc.PraybillDetailMapper;
 import com.nc.service.IPraybillDetailService;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;

@@ -1,17 +1,33 @@
 spring:
   datasource:
-    url: jdbc:oracle:thin:@localhost:1521:orcl
-    username: NC65
-    password: NC65
-    driver-class-name: oracle.jdbc.OracleDriver
     type: com.alibaba.druid.pool.DruidDataSource
-    druid:
-      initial-size: 5
-      min-idle: 5
-      time-between-eviction-runs-millis: 60000
-      min-evictable-idle-time-millis: 300000
-      validation-query: SELECT 1 FROM DUAL
-      test-while-idle: true
-      test-on-borrow: false
-      test-on-return: false
-      pool-prepared-statements: true
+    nc: #NC数据库
+      url: jdbc:oracle:thin:@localhost:1521:orcl
+      username: NC65
+      password: NC65
+      driver-class-name: oracle.jdbc.driver.OracleDriver
+      dbcp2:
+        initial-size: 5
+        min-idle: 5
+        max-wait-millis: 60000
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        pool-prepared-statements: true
+    wxwb: #外协外包数据库
+      url: jdbc:dm://localhost:5236/SYSDBA?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=utf-8
+      username: SYSDBA
+      password: 1446480467lj
+      driver-class-name: dm.jdbc.driver.DmDriver
+      dbcp2:
+        initial-size: 5
+        min-idle: 5
+        max-wait-millis: 60000
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        pool-prepared-statements: true

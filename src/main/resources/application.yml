@@ -4,7 +4,7 @@ server:
 mybatis-plus:
   mapper-locations:
   #复杂的sql 可以用在接口中使用注解或者定义xml
-  - classpath:/mapper/*/*Mapper.xml
+  #- classpath:/mapper/*/*Mapper.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
