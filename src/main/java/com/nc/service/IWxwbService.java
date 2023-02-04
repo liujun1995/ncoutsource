@@ -1,5 +1,6 @@
 package com.nc.service;
 
+import com.nc.entity.CheckRules;
 import com.nc.entity.wxwb.OutContractInfo;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface IWxwbService {
 
 	int quote(String contractIds);
 
-	void checkRules(String contractIds, String rules);
+	void checkRules(CheckRules checkRules);
 
 	List<Map<String, Object>> queryMatterContractInfo(String contractIds, String materialCode, String fromM20);
 

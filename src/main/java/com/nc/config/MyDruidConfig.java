@@ -55,7 +55,6 @@ public class MyDruidConfig {
 		bean.setInitParameters(initParams);
 		// 设置过滤路径
 		bean.setUrlPatterns(Arrays.asList("/*"));
-
 		return bean;
 	}
 

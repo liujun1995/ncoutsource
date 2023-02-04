@@ -2,11 +2,9 @@ package com.nc.controller;
 
 import java.util.List;
 import java.util.Map;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.nc.entity.CheckRules;
+import org.springframework.web.bind.annotation.*;
 import com.nc.aspect.CheckRule;
 import com.nc.common.CommonResult;
 import com.nc.service.IWxwbService;
@@ -29,10 +27,15 @@ public class WxwbController {
 		return CommonResult.success(JsonUtils.listToJSONArray(items));
 	}
 
+	/**
+	 * 引用合同
+	 * @param params 引用规则
+	 * @return
+	 */
 	@CheckRule
 	@PostMapping("/quote")
-	public CommonResult quote(@RequestParam("rules") String rules, @RequestParam("contractIds") String contractIds) {
-		return CommonResult.success(wxwbService.quote(contractIds));
+	public CommonResult quote(@RequestBody Map<String, Object> params) {
+		return CommonResult.success(wxwbService.quote(JsonUtils.convertMapToBean(CheckRules.class, params).getContractIds()));
 	}
 
 	@CheckRule

@@ -348,7 +348,6 @@ public class PraybillDetail extends Model<PraybillDetail> {
 	@TableField("DATA_SOURCE")
 	private String DATA_SOURCE="1";
 
-
 	@Override
 	protected Serializable pkVal() {
 		return this.PK_PRAYBILL_B;

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import com.nc.entity.CheckRules;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
@@ -66,24 +68,45 @@ public class WxwbServiceImpl implements IWxwbService {
 	}
 
 
-	@Override
-	public void checkRules(String contractIds, String rules) {
-		String[] ruleArr = rules.split(",");
-		for (String rule : ruleArr) {
-			if (!VerificationRulesEnum.vals().containsKey(rule))
-				throw new RuntimeException("不存在为"+rule+"验证规则，操作失败");
 
-			if (VerificationRulesEnum.val1.getVal().equals(rule) || VerificationRulesEnum.val2.getVal().equals(rule)) {
-				Wrapper<OutContractInfo> queryWhere = new EntityWrapper<OutContractInfo>();
-				queryWhere.in("CONTRACT_ID", Arrays.asList(contractIds.split(",")));
-				queryWhere.notIn("STATE", Arrays.asList("0,1".split(",")));
-				List<OutContractInfo> outContractInfos = outContractInfoMapper.selectList(queryWhere);
-				if (null != outContractInfos && 0 < outContractInfos.size()) {
-					List<String> projectNames = new ArrayList<String>();
-					for (OutContractInfo outContractInfo : outContractInfos) {
-						projectNames.add(outContractInfo.getProjectName());
+	@Override
+	public void checkRules(CheckRules checkRules) {
+		// 通用规则 校验合同是否可以正常使用
+		if (null != checkRules.getContractIds()) {
+			Wrapper<OutContractInfo> queryWhere = new EntityWrapper<OutContractInfo>();
+			queryWhere.in("CONTRACT_ID", Arrays.asList(checkRules.getContractIds().split(",")));
+			queryWhere.notIn("STATE", Arrays.asList("0,1".split(",")));
+			List<OutContractInfo> outContractInfos = outContractInfoMapper.selectList(queryWhere);
+			if (null != outContractInfos && 0 < outContractInfos.size()) {
+				List<String> projectNames = new ArrayList<String>();
+				for (OutContractInfo outContractInfo : outContractInfos) {
+					projectNames.add(outContractInfo.getProjectName());
+				}
+				throw new RuntimeException(String.format("%s合同未生效，请检查", projectNames.toString()));
+			}
+		}
+
+		// 自定义规则
+		if (null != checkRules.getRules()) {
+			String[] ruleArr = checkRules.getRules().split(",");
+			for (String rule : ruleArr) {
+				if (!VerificationRulesEnum.vals().containsKey(rule))
+					throw new RuntimeException("不存在验证规则，操作失败");
+
+				// 工序委外合同传输接口规则：校验工序所剩金额是否足够
+				if (VerificationRulesEnum.val2.getVal().equals(rule)) {
+					String[] approvalIdArr = checkRules.getApprovalIds().split(",");
+					String[] norigtaxmnyArr = checkRules.getNorigtaxmny().split(",");
+					List<String> message = new ArrayList<String>();
+					for (int i = 0; i < approvalIdArr.length; i++) {
+						OutContractInfo outContractInfo = new OutContractInfo();
+						outContractInfo.setApprovalId(approvalIdArr[i]);
+						OutContractInfo oci = outContractInfoMapper.selectOne(outContractInfo);
+						if (Double.parseDouble(oci.getContractAmount()) - Double.parseDouble(oci.getPaidAmount()) < Double.parseDouble(norigtaxmnyArr[i]))
+							message.add(oci.getApprovalBillnumber());
 					}
-					throw new RuntimeException(String.format("%s合同未生效，请检查", projectNames.toString()));
+					if (0 < message.size())
+						throw new RuntimeException(String.format("%s所剩金额不足，请检查", message.toString()));
 				}
 			}
 		}
