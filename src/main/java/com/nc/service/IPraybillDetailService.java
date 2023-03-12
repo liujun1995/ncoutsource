@@ -6,4 +6,6 @@ import com.nc.entity.PraybillDetail;
 public interface IPraybillDetailService extends IService<PraybillDetail> {
 
 
+    int selectPkPraybillB(String pk_praybill_b);
+
 }

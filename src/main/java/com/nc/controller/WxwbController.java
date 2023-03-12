@@ -2,7 +2,6 @@ package com.nc.controller;
 
 import java.util.List;
 import java.util.Map;
-
 import com.nc.entity.CheckRules;
 import org.springframework.web.bind.annotation.*;
 import com.nc.aspect.CheckRule;
@@ -24,6 +23,12 @@ public class WxwbController {
 	@GetMapping("/query")
 	public CommonResult query(@RequestParam("whereSql") String whereSql) {
 		List<Map<String, Object>> items = wxwbService.query(whereSql);
+		return CommonResult.success(JsonUtils.listToJSONArray(items));
+	}
+
+	@GetMapping("/queryContractAndMatterInfo")
+	public CommonResult queryContractAndMatterInfo(@RequestParam("whereSql") String whereSql) {
+		List<Map<String, Object>> items = wxwbService.queryContractAndMatterInfo(whereSql);
 		return CommonResult.success(JsonUtils.listToJSONArray(items));
 	}
 
@@ -57,9 +62,10 @@ public class WxwbController {
 	@GetMapping("/queryMatterContractInfo")
 	public CommonResult queryMatterContractInfo(@RequestParam("rules") String rules,
 												 @RequestParam("contractIds") String contractIds,
+												 @RequestParam("matterId") String matterId,
 												 @RequestParam("materialCode") String materialCode,
 												 @RequestParam("fromM20") String fromM20){
-		List<Map<String, Object>> items = wxwbService.queryMatterContractInfo(contractIds, materialCode, fromM20);
+		List<Map<String, Object>> items = wxwbService.queryMatterContractInfo(contractIds,matterId,materialCode, fromM20);
 		return CommonResult.success(JsonUtils.listToJSONArray(items));
 
 	}

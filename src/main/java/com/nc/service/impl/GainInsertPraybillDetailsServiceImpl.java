@@ -102,11 +102,13 @@ public class GainInsertPraybillDetailsServiceImpl implements IGainInsertPraybill
 
         for (PraybillB praybillB : praybillBs) {
 
-            EntityWrapper<PraybillDetail> praybillDetailEntityWrapper = new EntityWrapper<>();
+            //EntityWrapper<PraybillDetail> praybillDetailEntityWrapper = new EntityWrapper<>();
 
-            praybillDetailEntityWrapper.eq("PK_PRAYBILL_B",praybillB.getPK_PRAYBILL_B());
+            //praybillDetailEntityWrapper.eq("PK_PRAYBILL_B",praybillB.getPK_PRAYBILL_B());
 
-            int count = iPraybillDetailService.selectCount(praybillDetailEntityWrapper);
+            int count = iPraybillDetailService.selectPkPraybillB(praybillB.getPK_PRAYBILL_B());
+
+            //int count = iPraybillDetailService.selectCount(praybillDetailEntityWrapper);
 
             if (!(count>0)){
                 praybillBList.add(praybillB);

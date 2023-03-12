@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("NC65.PO_PRAYBILL")
+@TableName("PO_PRAYBILL")
 public class Praybill extends Model<Praybill>{
 
     private static final  long serialVersionUID = -6425279921645246525L;

@@ -32,7 +32,7 @@ public class WxwbServiceImpl implements IWxwbService {
 		return wxwbMapper.query(whereSql);
 	}
 
-	@Transactional(value = "wxwbTransactionManager", timeout = 5)
+	@Transactional(value = "wxwbTransactionManager")
 	@Override
 	public int quote(String contractIds) {
 
@@ -42,12 +42,10 @@ public class WxwbServiceImpl implements IWxwbService {
 		updateWhere.in("CONTRACT_ID", Arrays.asList(contractIds.split(",")));
 		OutContractInfo outContractInfo = new OutContractInfo();
 		outContractInfo.setIsUse(1);
-
 		return this.outContractInfoMapper.update(outContractInfo, updateWhere);
-
 	}
 
-	@Transactional(value = "wxwbTransactionManager", timeout = 5)
+	@Transactional(value = "wxwbTransactionManager")
 	@Override
 	public int unQuote(String contractIds) {
 
@@ -55,7 +53,6 @@ public class WxwbServiceImpl implements IWxwbService {
 			return 0;
 		Wrapper<OutContractInfo> updateWhere = new EntityWrapper<OutContractInfo>();
 		updateWhere.in("CONTRACT_ID", Arrays.asList(contractIds.split(",")));
-
 		OutContractInfo outContractInfo = new OutContractInfo();
 		outContractInfo.setIsUse(0);
 		return this.outContractInfoMapper.update(outContractInfo, updateWhere);
@@ -67,6 +64,10 @@ public class WxwbServiceImpl implements IWxwbService {
 		return this.outContractInfoMapper.selectById(contractId);
 	}
 
+	@Override
+	public List<Map<String, Object>> queryContractAndMatterInfo(String whereSql) {
+		return wxwbMapper.queryContractAndMatterInfo(whereSql);
+	}
 
 
 	@Override
@@ -112,9 +113,10 @@ public class WxwbServiceImpl implements IWxwbService {
 		}
 	}
 
-
+	/**/
 	@Override
-	public List<Map<String, Object>> queryMatterContractInfo(String contractIds, String materialCode, String fromM20) {
+	public List<Map<String, Object>> queryMatterContractInfo(String contractIds,String matterId, String materialCode, String fromM20) {
+
 		OutContractInfo outContractInfo = outContractInfoMapper.selectById(contractIds);
 		String contractlogId = outContractInfo.getContractlogId();
 		int buySource;
@@ -127,9 +129,9 @@ public class WxwbServiceImpl implements IWxwbService {
 		}
 		//contractlogId是null,合同有无contractlog_id
 		if (null==contractlogId){
-			return wxwbMapper.queryMatterAndContractInfoWithoutContractlogId(contractIds,materialCode,buySource);
+			return wxwbMapper.queryMatterAndContractInfoWithoutContractlogId(contractIds,matterId,materialCode,buySource);
 		}
-		return wxwbMapper.queryMatterAndContractInfoWithContractlogId(contractIds,materialCode,buySource);
+		return wxwbMapper.queryMatterAndContractInfoWithContractlogId(contractIds,matterId,materialCode,buySource);
 	}
 
 

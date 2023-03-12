@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("NC65.PRAYBILL_DETAIL")
+@TableName("PRAYBILL_DETAIL")
 public class PraybillDetail extends Model<PraybillDetail> {
 
 	/**

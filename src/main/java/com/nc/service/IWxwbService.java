@@ -14,9 +14,11 @@ public interface IWxwbService {
 
 	void checkRules(CheckRules checkRules);
 
-	List<Map<String, Object>> queryMatterContractInfo(String contractIds, String materialCode, String fromM20);
+	List<Map<String, Object>> queryMatterContractInfo(String contractIds, String matterId,String materialCode, String fromM20);
 
 	int unQuote(String contractIds);
 
 	OutContractInfo queryContractInfoById(String contractId);
+
+	List<Map<String, Object>> queryContractAndMatterInfo(String whereSql);
 }

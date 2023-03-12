@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@TableName("NC65.PO_PRAYBILL_B")
+@TableName("PO_PRAYBILL_B")
 public class PraybillB extends Model<PraybillB> {
 
 
