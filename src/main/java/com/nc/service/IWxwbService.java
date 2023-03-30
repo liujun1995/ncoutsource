@@ -21,4 +21,13 @@ public interface IWxwbService {
 	OutContractInfo queryContractInfoById(String contractId);
 
 	List<Map<String, Object>> queryContractAndMatterInfo(String whereSql);
+
+	//引用后返回contractId和matterInfoId各自影响的行数
+	Map<String,Integer> quoteMattersAndContracts(String contractIds, String matterInfoIds);
+
+	//取消引用后返回contractId和matterInfoId各自影响的行数
+	Map<String,Integer> unQuoteMattersAndContracts(String contractIds, String matterInfoIds);
+
+	//取消引用后返回matterInfoId影响的行数
+	Map<String,Integer> unQuoteMatters(String matterInfoIds);
 }

@@ -9,5 +9,8 @@ public class CheckRules {
 	private String rules;
 	private String approvalIds;
 	private String norigtaxmny;
+
+	//add by lj
+	private String matterInfoIds;
 	
 }

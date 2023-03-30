@@ -43,11 +43,46 @@ public class WxwbController {
 		return CommonResult.success(wxwbService.quote(JsonUtils.convertMapToBean(CheckRules.class, params).getContractIds()));
 	}
 
+	/**
+	 * 引用合同和物料
+	 * @param params 引用规则
+	 * @return
+	 */
+	@CheckRule
+	@PostMapping("/quoteMattersAndContracts")
+	public CommonResult quoteMattersAndContracts(@RequestBody Map<String, Object> params) {
+		final CheckRules checkRules = JsonUtils.convertMapToBean(CheckRules.class, params);
+		return CommonResult.success(wxwbService.quoteMattersAndContracts(checkRules.getContractIds(),checkRules.getMatterInfoIds()));
+	}
+
+
 	@CheckRule
 	@PostMapping("/unQuote")
 	public CommonResult unQuote(@RequestParam("rules") String rules, @RequestParam("contractIds") String contractIds) {
 		return CommonResult.success(wxwbService.unQuote(contractIds));
 	}
+
+	/**
+	 * 取消合同 和 物料的引用
+	 * @param rules
+	 * @param contractIds
+	 * @param matterInfoIds
+	 * @return
+	 */
+	@CheckRule
+	@PostMapping("/unQuoteMattersAndContracts")
+	public CommonResult unQuoteMattersAndContracts(@RequestParam("rules") String rules,
+												   @RequestParam("contractIds") String contractIds,
+												   @RequestParam("matterInfoIds") String matterInfoIds) {
+		return CommonResult.success(wxwbService.unQuoteMattersAndContracts(contractIds,matterInfoIds));
+	}
+
+
+	@PostMapping("/unQuoteMatters")
+	public CommonResult unQuoteMatters(@RequestParam("matterInfoIds") String matterInfoIds) {
+		return CommonResult.success(wxwbService.unQuoteMatters(matterInfoIds));
+	}
+
 
 	@CheckRule
 	@GetMapping("/queryContractInfoById")

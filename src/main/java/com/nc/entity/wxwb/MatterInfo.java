@@ -48,6 +48,16 @@ public class MatterInfo extends Model<MatterInfo> {
     @TableField("CONTRACTLOG_ID")
     private String contractlogId;
 
+    @TableField("IS_USED")
+    private Integer isUsed;
+
+    @TableField("ERP_USED")
+    private Integer erpUsed;
+
+    @TableField("MATTER_TYPE")
+    private Integer matterType;
+
+
     @Override
     protected Serializable pkVal() {
         return id;
