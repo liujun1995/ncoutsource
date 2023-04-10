@@ -105,9 +105,9 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
 					<!--配置源代码使用的开发版本-->
-					<source>${java.version}</source>
+					<source>8</source>
 					<!--配置需要生成的目标class文件的编译版本-->
-					<target>${java.version}</target>
+					<target>8</target>
 				</configuration>
 			</plugin>
 		</plugins>

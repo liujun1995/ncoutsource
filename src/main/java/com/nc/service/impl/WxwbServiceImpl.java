@@ -166,6 +166,60 @@ public class WxwbServiceImpl implements IWxwbService {
         return eachAffectedRowsMap;
     }
 
+    /**
+     * 采购订单保存时,检查供应商是否一致
+     * 一致是1,不一致是0
+     * @param contractIds
+     * @return
+     */
+    @Override
+    public List<Map<String, String>> CheckOutContractSupplierSame(String contractIds) {
+
+        List<Map<String, String>> resultMapList = new ArrayList<>();
+
+        Map<String, String> resultMap = new HashMap<String, String>();
+
+        resultMap.put("flag","1");
+
+//        if(null!=contractIds && contractIds.length()>0){
+//
+//            String[] contracts = contractIds.split(",");
+//
+//            for (int i=0;i<contracts.length;i++){
+//
+//                String contractId = contracts[i];
+//
+//                String supplierCode = outContractInfoMapper.querySupplierCodeWithContractId(contractId);
+//
+//
+//
+//
+//            }
+//
+//
+//        }
+        Wrapper<OutContractInfo> selectWhere = new EntityWrapper<OutContractInfo>();
+
+        selectWhere.in("CONTRACT_ID", Arrays.asList(contractIds.split(",")));
+
+        List<OutContractInfo> outContractInfos = this.outContractInfoMapper.selectList(selectWhere);
+
+        //检查Contract中供应商code是否一致,
+        final long count = outContractInfos.stream().filter(contract -> null != contract.getSupplierCode())
+                .map(OutContractInfo::getSupplierCode).distinct().count();
+
+        if(count != 1){
+
+            resultMap.put("flag","0");
+
+        }
+
+        resultMapList.add(resultMap);
+
+        return resultMapList;
+
+    }
+
     @Override
     public OutContractInfo queryContractInfoById(String contractId) {
         return this.outContractInfoMapper.selectById(contractId);

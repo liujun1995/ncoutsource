@@ -19,6 +19,21 @@ public class WxwbController {
 	@Resource
 	private IWxwbService wxwbService;
 
+	/**
+	 * 采购订单保存时,检查供应商是否一致
+	 * @param rules
+	 * @param contractIds
+	 * @return
+	 */
+	@CheckRule
+	@GetMapping("/CheckOutContractSupplierSame")
+	public CommonResult CheckOutContractSupplierSame(@RequestParam("rules") String rules,
+													 @RequestParam("contractIds") String contractIds){
+		List<Map<String,String>> result =  wxwbService.CheckOutContractSupplierSame(contractIds);
+		return CommonResult.success(JsonUtils.listToJSONArray(result));
+
+	}
+
 
 	@GetMapping("/query")
 	public CommonResult query(@RequestParam("whereSql") String whereSql) {

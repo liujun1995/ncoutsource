@@ -30,4 +30,7 @@ public interface IWxwbService {
 
 	//取消引用后返回matterInfoId影响的行数
 	Map<String,Integer> unQuoteMatters(String matterInfoIds);
+
+	//采购订单保存时,检查供应商是否一致
+	List<Map<String, String>> CheckOutContractSupplierSame(String contractIds);
 }
