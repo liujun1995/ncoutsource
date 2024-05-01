@@ -11,15 +11,15 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @Configuration
 public class JdbcTemplateDataSourceConfig {
 
-	@Primary
-	@Bean(name = "ncJdbcTemplate")
-	public JdbcTemplate ncJdbcTemplate(@Qualifier("ncDataSource") DataSource dataSource) {
-		return new JdbcTemplate(dataSource);
-	}
-
-	@Bean(name = "wxwbJdbcTemplate")
-	public JdbcTemplate wxwbJdbcTemplate(@Qualifier("wxwbDataSource") DataSource dataSource) {
-		return new JdbcTemplate(dataSource);
-	}
+//	@Primary
+//	@Bean(name = "ncJdbcTemplate")
+//	public JdbcTemplate ncJdbcTemplate(@Qualifier("ncDataSource") DataSource dataSource) {
+//		return new JdbcTemplate(dataSource);
+//	}
+//
+//	@Bean(name = "wxwbJdbcTemplate")
+//	public JdbcTemplate wxwbJdbcTemplate(@Qualifier("wxwbDataSource") DataSource dataSource) {
+//		return new JdbcTemplate(dataSource);
+//	}
 
 }

@@ -19,11 +19,11 @@ import com.alibaba.druid.support.http.WebStatFilter;
 @Configuration
 public class MyDruidConfig {
 
-	@ConfigurationProperties(prefix = "spring.datasource")
-	@Bean
-	public DataSource druidDatasource() {
-		return new DruidDataSource();
-	}
+//	@ConfigurationProperties(prefix = "spring.datasource")
+//	@Bean
+//	public DataSource druidDatasource() {
+//		return new DruidDataSource();
+//	}
 
 	// 配置 Druid 监控管理后台的Servlet；
 	// 内置 Servlet 容器时没有web.xml文件，所以使用 Spring Boot 的注册 Servlet 方式
